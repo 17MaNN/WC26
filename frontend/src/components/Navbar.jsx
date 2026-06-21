@@ -2,8 +2,8 @@ export default function Navbar({ page, setPage }) {
   return (
     <nav className="navbar">
       <div className="navbar-brand">
-        <span className="trophy">🏆</span>
-        <span>WC2026 Predictor</span>
+        <span className="trophy"></span>
+        <span>FIFA 2026 Predictor</span>
       </div>
       <div className="navbar-links">
         <button

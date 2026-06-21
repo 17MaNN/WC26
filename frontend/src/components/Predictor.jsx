@@ -2,29 +2,75 @@ import { useState, useEffect, useRef } from 'react'
 import { predictMatch } from '../api'
 
 const TEAMS = [
-  "Argentina", "France", "England", "Brazil", "Spain", "Portugal",
-  "Belgium", "Germany", "Netherlands", "Croatia", "Italy", "Morocco",
-  "Uruguay", "Colombia", "Denmark", "Mexico", "USA", "Switzerland",
-  "Senegal", "Japan", "Ecuador", "Australia", "Poland", "South Korea",
-  "Canada", "Turkey", "Ukraine", "Austria", "Ghana", "Tunisia",
-  "Cameroon", "Serbia", "Ivory Coast", "Czechia", "Sweden", "Nigeria",
-  "Algeria", "Egypt", "Saudi Arabia", "Iran", "Venezuela", "Paraguay",
-  "South Africa", "Qatar", "Iraq", "Indonesia", "New Zealand", "Bolivia"
+  "Algeria", "Argentina", "Australia", "Austria",
+  "Belgium", "Bosnia and Herzegovina", "Brazil",
+  "Canada", "Cabo Verde", "Colombia", "Croatia", "Curacao",
+  "Czechia", "DR Congo",
+  "Ecuador", "Egypt", "England",
+  "France",
+  "Germany", "Ghana",
+  "Haiti",
+  "Iran", "Iraq", "Ivory Coast",
+  "Japan", "Jordan",
+  "Mexico", "Morocco",
+  "Netherlands", "New Zealand", "Norway",
+  "Panama", "Paraguay", "Portugal",
+  "Qatar",
+  "Saudi Arabia", "Scotland", "Senegal", "South Africa", "South Korea",
+  "Spain", "Sweden", "Switzerland",
+  "Tunisia", "Turkey",
+  "Uruguay", "USA", "Uzbekistan"
 ].sort()
 
 const FLAGS = {
-  "Argentina":"🇦🇷","France":"🇫🇷","England":"🏴󠁧󠁢󠁥󠁮󠁧󠁿","Brazil":"🇧🇷",
-  "Spain":"🇪🇸","Portugal":"🇵🇹","Belgium":"🇧🇪","Germany":"🇩🇪",
-  "Netherlands":"🇳🇱","Croatia":"🇭🇷","Italy":"🇮🇹","Morocco":"🇲🇦",
-  "Uruguay":"🇺🇾","Colombia":"🇨🇴","Denmark":"🇩🇰","Mexico":"🇲🇽",
-  "USA":"🇺🇸","Switzerland":"🇨🇭","Senegal":"🇸🇳","Japan":"🇯🇵",
-  "Ecuador":"🇪🇨","Australia":"🇦🇺","Poland":"🇵🇱","South Korea":"🇰🇷",
-  "Canada":"🇨🇦","Turkey":"🇹🇷","Ukraine":"🇺🇦","Austria":"🇦🇹",
-  "Ghana":"🇬🇭","Tunisia":"🇹🇳","Cameroon":"🇨🇲","Serbia":"🇷🇸",
-  "Ivory Coast":"🇨🇮","Czechia":"🇨🇿","Sweden":"🇸🇪","Nigeria":"🇳🇬",
-  "Algeria":"🇩🇿","Egypt":"🇪🇬","Saudi Arabia":"🇸🇦","Iran":"🇮🇷",
-  "Venezuela":"🇻🇪","Paraguay":"🇵🇾","South Africa":"🇿🇦","Qatar":"🇶🇦",
-  "Iraq":"🇮🇶","Indonesia":"🇮🇩","New Zealand":"🇳🇿","Bolivia":"🇧🇴",
+  "Algeria":"🇩🇿",
+  "Argentina":"🇦🇷",
+  "Australia":"🇦🇺",
+  "Austria":"🇦🇹",
+  "Belgium":"🇧🇪",
+  "Bosnia and Herzegovina":"🇧🇦",
+  "Brazil":"🇧🇷",
+  "Canada":"🇨🇦",
+  "Cabo Verde":"🇨🇻",
+  "Colombia":"🇨🇴",
+  "Croatia":"🇭🇷",
+  "Curacao":"🇨🇼",
+  "Czechia":"🇨🇿",
+  "DR Congo":"🇨🇩",
+  "Ecuador":"🇪🇨",
+  "Egypt":"🇪🇬",
+  "England":"🏴",
+  "France":"🇫🇷",
+  "Germany":"🇩🇪",
+  "Ghana":"🇬🇭",
+  "Haiti":"🇭🇹",
+  "Iran":"🇮🇷",
+  "Iraq":"🇮🇶",
+  "Ivory Coast":"🇨🇮",
+  "Japan":"🇯🇵",
+  "Jordan":"🇯🇴",
+  "Mexico":"🇲🇽",
+  "Morocco":"🇲🇦",
+  "Netherlands":"🇳🇱",
+  "New Zealand":"🇳🇿",
+  "Norway":"🇳🇴",
+  "Panama":"🇵🇦",
+  "Paraguay":"🇵🇾",
+  "Portugal":"🇵🇹",
+  "Qatar":"🇶🇦",
+  "Saudi Arabia":"🇸🇦",
+  "Scotland":"🏴",
+  "Senegal":"🇸🇳",
+  "South Africa":"🇿🇦",
+  "South Korea":"🇰🇷",
+  "Spain":"🇪🇸",
+  "Sweden":"🇸🇪",
+  "Switzerland":"🇨🇭",
+  "Tunisia":"🇹🇳",
+  "Turkey":"🇹🇷",
+  "Uruguay":"🇺🇾",
+  "USA":"🇺🇸",
+  "Uzbekistan":"🇺🇿"
 }
 
 const getFlag = (t) => FLAGS[t] || '🏳️'
@@ -134,7 +180,7 @@ export default function Predictor() {
           {error && <p className="error">{error}</p>}
 
           <button className="predict-btn" onClick={handlePredict} disabled={loading}>
-            {loading ? 'Predicting...' : '⚡ Predict Match'}
+            {loading ? 'Predicting...' : 'Predict Match'}
           </button>
 
           {result && (
@@ -147,7 +193,7 @@ export default function Predictor() {
                 <div className="result-center">
                   <span className="result-vs">VS</span>
                   <span className="result-label">
-                    {winner ? `🏆 ${winner} wins` : '🤝 Draw likely'}
+                    {winner ? `${winner} wins` : 'Draw likely'}
                   </span>
                 </div>
                 <div className="team-block-result">
