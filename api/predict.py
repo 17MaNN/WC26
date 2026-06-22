@@ -57,7 +57,16 @@ ELO_RATINGS = {
     "Indonesia": 1340,
     "New Zealand": 1360,
     "Bolivia": 1340,
-    "Congo DR": 1380,
+    "DR Congo": 1380,
+    "Bosnia and Herzegovina": 1450,
+    "Cabo Verde": 1420,
+    "Curacao": 1385,
+    "Haiti": 1370,
+    "Jordan": 1410,
+    "Norway": 1630,
+    "Panama": 1470,
+    "Scotland": 1600,
+    "Uzbekistan": 1460,
 }
 
 def get_elo(team):
