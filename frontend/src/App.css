@@ -507,3 +507,168 @@ h1 {
 }
 
 .loading { color: var(--text-secondary); font-size: 14px; font-weight: 300; }
+
+/* ===== MOBILE RESPONSIVE ===== */
+@media (max-width: 640px) {
+
+  /* NAVBAR */
+  .navbar {
+    padding: 0 1rem;
+    height: 56px;
+  }
+
+  .navbar-brand {
+    font-size: 13px;
+    letter-spacing: 1px;
+  }
+
+  .navbar-links button {
+    padding: 6px 12px;
+    font-size: 12px;
+  }
+
+  /* PAGES */
+  .page {
+    padding: 1.5rem 1rem;
+  }
+
+  h1 {
+    font-size: 26px;
+    letter-spacing: -0.5px;
+  }
+
+  .subtitle {
+    font-size: 13px;
+    margin-bottom: 1.5rem;
+  }
+
+  /* PREDICTOR CARD */
+  .predictor-card {
+    padding: 1.25rem;
+    border-radius: 16px;
+  }
+
+  /* TEAM SELECTS — stack vertically on mobile */
+  .team-selects {
+    grid-template-columns: 1fr;
+    gap: 8px;
+  }
+
+  .vs-badge {
+    padding: 4px 0;
+    text-align: center;
+    font-size: 10px;
+  }
+
+  .select-group select {
+    padding: 12px 14px;
+    font-size: 15px; /* bigger for touch */
+  }
+
+  /* PREDICT BUTTON */
+  .predict-btn {
+    padding: 14px;
+    font-size: 13px;
+  }
+
+  /* RESULT PANEL */
+  .result-panel {
+    margin-top: 1.5rem;
+    padding-top: 1.5rem;
+  }
+
+  .result-header {
+    margin-bottom: 1.5rem;
+  }
+
+  .team-flag-large {
+    font-size: 40px;
+  }
+
+  .team-name-result {
+    font-size: 12px;
+  }
+
+  .result-label {
+    font-size: 10px;
+    padding: 5px 10px;
+    white-space: normal;
+    text-align: center;
+  }
+
+  /* PROB BARS */
+  .prob-label {
+    width: 75px;
+    font-size: 11px;
+  }
+
+  .prob-pct {
+    font-size: 12px;
+    width: 30px;
+  }
+
+  /* FILTERS */
+  .filters {
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .filters input,
+  .filters select {
+    width: 100%;
+    min-width: unset;
+    font-size: 15px;
+  }
+
+  /* FIXTURES */
+  .fixture-card {
+    padding: 0.875rem 1rem;
+    border-radius: 12px;
+  }
+
+  .fixture-teams {
+    font-size: 13px;
+    gap: 6px;
+  }
+
+  .fixture-flag {
+    font-size: 16px;
+  }
+
+  .fixture-meta {
+    gap: 4px;
+    margin-bottom: 8px;
+  }
+
+  .fixture-date {
+    font-size: 10px;
+  }
+
+  .fixture-venue {
+    display: none; /* hide venue on mobile, too cluttered */
+  }
+
+  .fixture-prob-val {
+    font-size: 13px;
+  }
+
+  .fixture-prob-lbl {
+    font-size: 8px;
+  }
+
+  /* hide long team names gracefully */
+  .fixture-team span:last-child {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 100px;
+  }
+}
+
+/* VERY SMALL PHONES */
+@media (max-width: 380px) {
+  h1 { font-size: 22px; }
+  .navbar-brand { font-size: 12px; }
+  .team-flag-large { font-size: 34px; }
+  .fixture-team span:last-child { max-width: 75px; }
+}
