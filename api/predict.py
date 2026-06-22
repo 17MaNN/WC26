@@ -1,7 +1,9 @@
+import os
 import joblib
 import pandas as pd
 
-model = joblib.load(r'C:\WC26\api\models\xgb_model.pkl')
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+model = joblib.load(os.path.join(BASE_DIR, 'models', 'xgb_model.pkl'))
 
 FEATURES = [
     'elo_diff', 'form_diff', 'is_neutral', 'tournament_weight',
