@@ -1,7 +1,7 @@
 import joblib
 import pandas as pd
 
-model = joblib.load(r'C:\WC26\models\xgb_model.pkl')
+model = joblib.load(r'C:\WC26\api\models\xgb_model.pkl')
 
 FEATURES = [
     'elo_diff', 'form_diff', 'is_neutral', 'tournament_weight',
