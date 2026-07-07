@@ -868,3 +868,26 @@ h1 {
   .acc-pred-row { justify-content: flex-start; }
   .elo-team { width: 100px; }
 }
+
+.fixture-card.finished { border-left: 2px solid var(--border-gold); }
+
+.fixture-score {
+  font-family: 'Syne', sans-serif;
+  font-size: 18px;
+  font-weight: 800;
+  color: var(--gold);
+  letter-spacing: 1px;
+  padding: 0 8px;
+}
+
+.finished-tag {
+  font-size: 9px;
+  font-weight: 700;
+  padding: 3px 8px;
+  background: var(--gold-dim);
+  color: var(--gold);
+  border-radius: 5px;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  border: 1px solid var(--border-gold);
+}

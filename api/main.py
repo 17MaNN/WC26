@@ -128,3 +128,69 @@ def trigger_update():
         return {"status": "update complete"}
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
+    
+@app.get("/fixtures")
+def get_fixtures(db: Session = Depends(get_db)):
+    import requests, os
+    headers = {"X-Auth-Token": os.environ.get("FOOTBALL_DATA_API_KEY")}
+    res = requests.get(
+        "https://api.football-data.org/v4/competitions/WC/matches",
+        headers=headers, timeout=10
+    )
+    matches = res.json().get('matches', [])
+
+    # get all predictions from DB for finished matches
+    results = {r.match_id: r for r in db.query(MatchResult).all()}
+
+    fixtures = []
+    for m in matches:
+        mid = m['id']
+        home = m['homeTeam']['name']
+        away = m['awayTeam']['name']
+        status = m['status']
+        stage = m.get('stage', '')
+        group = m.get('group', '')
+        date = m.get('utcDate', '')[:10]
+        stadium = m.get('venue', '')
+
+        # get score if finished
+        hs = m['score']['fullTime']['home']
+        as_ = m['score']['fullTime']['away']
+
+        # get prediction from DB or generate live
+        if mid in results:
+            r = results[mid]
+            pred = {
+                'home_win': None,
+                'draw': None,
+                'away_win': None,
+                'predicted_outcome': r.predicted_outcome
+            }
+        else:
+            # predict upcoming matches
+            try:
+                pred = make_prediction(home, away, is_neutral=1, db=db)
+            except:
+                pred = {'home_win': None, 'draw': None,
+                        'away_win': None, 'predicted_outcome': None}
+
+        fixtures.append({
+            'match_id': mid,
+            'home_team': home,
+            'away_team': away,
+            'home_crest': m['homeTeam'].get('crest', ''),
+            'away_crest': m['awayTeam'].get('crest', ''),
+            'status': status,
+            'stage': stage,
+            'group': group.replace('GROUP_', '') if group else '',
+            'date': date,
+            'stadium': stadium,
+            'score_home': hs,
+            'score_away': as_,
+            'home_win': pred.get('home_win'),
+            'draw': pred.get('draw'),
+            'away_win': pred.get('away_win'),
+            'predicted_outcome': pred.get('predicted_outcome'),
+        })
+
+    return fixtures
