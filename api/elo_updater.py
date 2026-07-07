@@ -1,3 +1,4 @@
+import os
 import requests
 from database import SessionLocal, EloRating, MatchResult, AccuracyLog
 from predict import make_prediction, INITIAL_ELO
@@ -5,7 +6,8 @@ from datetime import datetime, timezone
 
 K_GROUP = 32
 K_KNOCKOUT = 40
-FIXTURES_URL = "https://www.thestatsapi.com/world-cup/data/fixtures.json"
+FD_API_KEY = os.environ.get("FOOTBALL_DATA_API_KEY")
+FD_URL = "https://api.football-data.org/v4/competitions/WC/matches"
 
 def expected_score(ra, rb):
     return 1 / (1 + 10 ** ((rb - ra) / 400))
@@ -22,14 +24,12 @@ def save_elo(db, team, rating):
         row.rating = rating
         row.updated_at = datetime.now(timezone.utc)
     else:
-        db.add(EloRating(
-            team=team, rating=rating,
-            updated_at=datetime.now(timezone.utc)
-        ))
+        db.add(EloRating(team=team, rating=rating,
+                         updated_at=datetime.now(timezone.utc)))
     db.commit()
 
 def update_elo_pair(db, home, away, outcome, stage):
-    k = K_KNOCKOUT if stage != 'group-stage' else K_GROUP
+    k = K_KNOCKOUT if stage != 'GROUP_STAGE' else K_GROUP
     eh = get_elo_from_db(db, home)
     ea = get_elo_from_db(db, away)
     sh, sa = (1,0) if outcome=='home_win' else (0,1) if outcome=='away_win' else (0.5,0.5)
@@ -43,64 +43,38 @@ def get_actual_outcome(hs, as_):
     elif hs < as_: return 'away_win'
     return 'draw'
 
-def fetch_match_score(match_url):
-    """Fetch individual match page and extract score."""
-    try:
-        # match data endpoint — append /data.json
-        data_url = match_url.replace(
-            'https://www.thestatsapi.com/world-cup/matches/',
-            'https://www.thestatsapi.com/world-cup/data/matches/'
-        ) + '.json'
-        res = requests.get(data_url, timeout=8)
-        if res.status_code != 200:
-            return None, None
-        data = res.json()
-        hs = data.get('score_home') or data.get('homeScore') or data.get('home_score')
-        as_ = data.get('score_away') or data.get('awayScore') or data.get('away_score')
-        if hs is not None and as_ is not None:
-            return int(hs), int(as_)
-        return None, None
-    except:
-        return None, None
-
 def run_update():
     print(f"[{datetime.now()}] Running Elo update...")
     db = SessionLocal()
     try:
-        res = requests.get(FIXTURES_URL, timeout=10)
-        fixtures = res.json().get('fixtures', [])
+        headers = {"X-Auth-Token": FD_API_KEY}
+        res = requests.get(FD_URL, headers=headers, timeout=10)
+        if res.status_code != 200:
+            print(f"API error: {res.status_code} {res.text[:200]}")
+            return
 
+        matches = res.json().get('matches', [])
         processed_ids = {r.match_id for r in db.query(MatchResult).all()}
         new_processed = 0
 
-        # only process past matches (by date)
-        today = datetime.now(timezone.utc).date()
+        for m in matches:
+            mid = m.get('id')
+            status = m.get('status')
 
-        for m in fixtures:
-            mid = m.get('matchNumber')
-            home = m.get('homeTeam')
-            away = m.get('awayTeam')
-            stage = m.get('stage', 'group-stage')
-            match_url = m.get('matchUrl', '')
-            match_date = m.get('date', '')
-
-            # skip future matches
-            try:
-                if datetime.strptime(match_date, '%Y-%m-%d').date() >= today:
-                    continue
-            except:
+            # only process finished matches
+            if status != 'FINISHED':
                 continue
-
             if mid in processed_ids:
                 continue
-            if not home or not away:
-                continue
-            if any(x in str(home) for x in ['Winner', 'Group', 'Loser', 'Runner']):
-                continue
 
-            # fetch score from match page
-            hs, as_ = fetch_match_score(match_url)
-            if hs is None:
+            home = m['homeTeam']['name']
+            away = m['awayTeam']['name']
+            hs = m['score']['fullTime']['home']
+            as_ = m['score']['fullTime']['away']
+            stage = m.get('stage', 'GROUP_STAGE')
+            match_date = m.get('utcDate', '')[:10]
+
+            if hs is None or as_ is None:
                 continue
 
             actual = get_actual_outcome(hs, as_)
@@ -122,7 +96,7 @@ def run_update():
             ))
             db.commit()
             new_processed += 1
-            print(f"  Processed: {home} {hs}-{as_} {away} → pred:{predicted} actual:{actual}")
+            print(f"  {home} {hs}-{as_} {away} → pred:{predicted} actual:{actual}")
 
         all_results = db.query(MatchResult).all()
         total = len(all_results)

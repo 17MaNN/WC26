@@ -106,11 +106,17 @@ def trigger_update():
     
 @app.get("/debug-fixtures")
 def debug_fixtures():
-    import requests
-    # test one match URL to see score format
-    test_url = "https://www.thestatsapi.com/world-cup/data/matches/mexico-vs-south-africa-2026-06-11.json"
-    res = requests.get(test_url, timeout=10)
+    import requests, os
+    headers = {"X-Auth-Token": os.environ.get("FOOTBALL_DATA_API_KEY")}
+    res = requests.get(
+        "https://api.football-data.org/v4/competitions/WC/matches",
+        headers=headers, timeout=10
+    )
+    matches = res.json().get('matches', [])
+    finished = [m for m in matches if m.get('status') == 'FINISHED']
     return {
         "status": res.status_code,
-        "data": res.json() if res.status_code == 200 else res.text
+        "total": len(matches),
+        "finished": len(finished),
+        "sample": finished[:2] if finished else matches[:2]
     }
