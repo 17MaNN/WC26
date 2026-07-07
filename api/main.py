@@ -103,3 +103,18 @@ def trigger_update():
         return {"status": "update complete"}
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
+    
+# add this to api/main.py temporarily
+@app.get("/debug-fixtures")
+def debug_fixtures():
+    import requests
+    res = requests.get("https://www.thestatsapi.com/world-cup/data/fixtures.json", timeout=10)
+    data = res.json()
+    fixtures = data.get('fixtures', [])
+    # return first 5 with scores
+    with_scores = [m for m in fixtures if m.get('score_home') is not None]
+    return {
+        "total_fixtures": len(fixtures),
+        "with_scores": len(with_scores),
+        "sample": with_scores[:3] if with_scores else fixtures[:3]
+    }
