@@ -120,3 +120,11 @@ def debug_fixtures():
         "finished": len(finished),
         "sample": finished[:2] if finished else matches[:2]
     }
+
+@app.get("/trigger-update")
+def trigger_update():
+    try:
+        run_update()
+        return {"status": "update complete"}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
