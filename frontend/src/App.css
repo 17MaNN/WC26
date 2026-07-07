@@ -670,3 +670,201 @@ h1 {
   .team-flag-large { font-size: 34px; }
   .fixture-team span:last-child { max-width: 75px; }
 }
+
+/* ACCURACY PAGE */
+.acc-hero {
+  background: var(--surface);
+  border: 1px solid var(--border-gold);
+  border-radius: 20px;
+  padding: 2.5rem;
+  text-align: center;
+  margin-bottom: 2rem;
+  position: relative;
+  overflow: hidden;
+}
+
+.acc-hero::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at 50% 0%, rgba(201,168,76,0.08), transparent 70%);
+  pointer-events: none;
+}
+
+.acc-big {
+  font-family: 'Syne', sans-serif;
+  font-size: 72px;
+  font-weight: 800;
+  color: var(--gold);
+  line-height: 1;
+  letter-spacing: -2px;
+}
+
+.acc-big-label {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text);
+  margin-top: 8px;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+}
+
+.acc-big-sub {
+  font-size: 13px;
+  color: var(--text-secondary);
+  margin-top: 4px;
+  font-weight: 300;
+}
+
+.acc-section-title {
+  font-family: 'Syne', sans-serif;
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  margin-bottom: 12px;
+}
+
+.acc-stage-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 10px;
+  margin-bottom: 1rem;
+}
+
+.acc-stage-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 1rem 1.25rem;
+}
+
+.acc-stage-name {
+  font-size: 12px;
+  color: var(--text-secondary);
+  font-weight: 500;
+  margin-bottom: 6px;
+}
+
+.acc-stage-pct {
+  font-family: 'Syne', sans-serif;
+  font-size: 28px;
+  font-weight: 800;
+  margin-bottom: 8px;
+}
+
+.acc-stage-track {
+  height: 3px;
+  background: var(--surface2);
+  border-radius: 2px;
+  overflow: hidden;
+  margin-bottom: 6px;
+}
+
+.acc-stage-fill {
+  height: 100%;
+  border-radius: 2px;
+  transition: width 1s ease;
+}
+
+.acc-stage-sub {
+  font-size: 11px;
+  color: var(--text-secondary);
+  font-weight: 300;
+}
+
+.acc-recent-list { display: flex; flex-direction: column; gap: 8px; }
+
+.acc-recent-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 0.875rem 1.25rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  transition: border-color .2s;
+}
+
+.acc-recent-card.correct { border-left: 3px solid #22c55e; }
+.acc-recent-card.wrong { border-left: 3px solid #ef4444; }
+
+.acc-recent-left { display: flex; align-items: center; gap: 12px; flex: 1; }
+.acc-recent-right { display: flex; flex-direction: column; gap: 4px; text-align: right; }
+
+.acc-badge {
+  width: 28px; height: 28px;
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 12px; font-weight: 700;
+  flex-shrink: 0;
+}
+
+.badge-correct { background: rgba(34,197,94,0.15); color: #22c55e; }
+.badge-wrong { background: rgba(239,68,68,0.15); color: #ef4444; }
+
+.acc-match-name { font-size: 13px; font-weight: 600; }
+.acc-match-meta { font-size: 11px; color: var(--text-secondary); margin-top: 2px; font-weight: 300; }
+
+.acc-pred-row { display: flex; gap: 8px; align-items: center; justify-content: flex-end; }
+.acc-pred-label { font-size: 10px; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.8px; }
+.acc-pred-val { font-size: 12px; font-weight: 600; text-transform: capitalize; }
+
+/* ELO RANKINGS */
+.elo-list { display: flex; flex-direction: column; gap: 8px; }
+
+.elo-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 10px 14px;
+}
+
+.elo-rank {
+  font-family: 'Syne', sans-serif;
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--text-secondary);
+  width: 28px;
+}
+
+.elo-team { font-size: 13px; font-weight: 500; width: 130px; }
+
+.elo-bar-wrap {
+  flex: 1;
+  height: 3px;
+  background: var(--surface2);
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.elo-bar {
+  height: 100%;
+  background: var(--gold);
+  border-radius: 2px;
+}
+
+.elo-rating {
+  font-family: 'Syne', sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--gold);
+  width: 40px;
+  text-align: right;
+}
+
+/* MOBILE */
+@media (max-width: 640px) {
+  .acc-big { font-size: 56px; }
+  .acc-stage-grid { grid-template-columns: 1fr 1fr; }
+  .acc-recent-card { flex-direction: column; align-items: flex-start; }
+  .acc-recent-right { text-align: left; }
+  .acc-pred-row { justify-content: flex-start; }
+  .elo-team { width: 100px; }
+}

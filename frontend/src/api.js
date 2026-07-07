@@ -15,3 +15,8 @@ export const fetchFixtures = async () => {
   )
   return res.data.fixtures
 }
+
+export const fetchAccuracy = async () => {
+  const res = await axios.get(`${BASE}/accuracy`)
+  return res.data
+}
