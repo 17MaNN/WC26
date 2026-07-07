@@ -1,4 +1,3 @@
-# api/requirements.txt
 fastapi
 uvicorn
 xgboost
@@ -6,3 +5,7 @@ scikit-learn
 pandas
 joblib
 numpy
+psycopg2-binary
+sqlalchemy
+apscheduler
+requests

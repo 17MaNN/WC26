@@ -656,7 +656,6 @@ h1 {
     font-size: 8px;
   }
 
-  /* hide long team names gracefully */
   .fixture-team span:last-child {
     white-space: nowrap;
     overflow: hidden;
@@ -665,7 +664,6 @@ h1 {
   }
 }
 
-/* VERY SMALL PHONES */
 @media (max-width: 380px) {
   h1 { font-size: 22px; }
   .navbar-brand { font-size: 12px; }
